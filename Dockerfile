@@ -2,7 +2,7 @@ FROM php:8.2-fpm-alpine as php
 
 RUN apk add --no-cache unzip libpq-dev gnutls-dev autoconf build-base \
     curl-dev nginx supervisor shadow bash
-RUN docker-php-ext-install pdo pdo_pgsql
+RUN docker-php-ext-install pdo pdo_mysql
 RUN pecl install pcov && docker-php-ext-enable pcov
 
 WORKDIR /app
@@ -21,9 +21,9 @@ RUN /usr/sbin/nginx -t -c /etc/nginx/nginx.conf
 COPY docker/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 
 # Copy application sources into the container.
-COPY . .
+COPY --chown=customuser=customgroup . .
 
-COPY --from=composer:2.3.5 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.7.6 /usr/bin/composer /usr/bin/composer
 
 ENTRYPOINT ["docker/entrypoint.sh"]
 

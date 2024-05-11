@@ -2,7 +2,6 @@
 	cache cache-clear migrate migrate migrate-fresh tests tests-html
 
 CONTAINER_PHP=api
-CONTAINER_REDIS=redis
 CONTAINER_DATABASE=database
 
 help: ## Print help.
@@ -13,9 +12,9 @@ ps: ## Show containers.
 
 init: ## init app
 	cp .env.example .env
+	make fresh
+	make migrate
 	make passport-keys
-	make build
-	make start
 
 build: ## Build all containers for DEV
 	@docker compose build --no-cache
@@ -23,12 +22,7 @@ build: ## Build all containers for DEV
 start: ## Start all containers
 	@docker compose up --force-recreate -d
 
-fresh:  ## Destroy & recreate all uing dev containers.
-	make stop
-	make destroy
-	make build
-	make start
-	make install
+fresh: stop destroy build start install  ## Destroy & recreate all uing dev containers.
 
 stop: ## Stop all containers
 	@docker compose stop
