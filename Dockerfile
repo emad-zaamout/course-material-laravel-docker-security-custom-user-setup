@@ -21,7 +21,7 @@ RUN /usr/sbin/nginx -t -c /etc/nginx/nginx.conf
 COPY docker/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 
 # Copy application sources into the container.
-COPY --chown=customuser=customgroup . .
+COPY . .
 
 COPY --from=composer:2.7.6 /usr/bin/composer /usr/bin/composer
 

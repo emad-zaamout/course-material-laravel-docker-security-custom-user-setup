@@ -13,7 +13,6 @@ ps: ## Show containers.
 init: ## init app
 	cp .env.example .env
 	make fresh
-	make migrate
 	make passport-keys
 
 build: ## Build all containers for DEV
